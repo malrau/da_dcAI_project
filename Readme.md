@@ -1,4 +1,6 @@
+-------------------------------
 -- 540438 - Maurizio La Rosa --
+-------------------------------
 
 This repository hosts the project for the exam of the course Devices and circuits for artificial intelligence from the Data Analysis degree of the Universityof Messina. The project consists in building a machine learning model for image classification.
 
