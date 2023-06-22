@@ -2,11 +2,11 @@
 ### FUNCTIONS TO READ RANDOM IMAGES ###
 #######################################
 
-### IMPORT REQUIRED MODULES #####
+### IMPORT REQUIRED MODULES ###
 import os                                   # os-like features, as navigating directories
-import random                               # random
+import random                               # random data generation
 from matplotlib import pyplot as plt        # plotting library
-from matplotlib import image as mpimg       # image reading library
+from matplotlib import image as mpimg       # dealing with image data
 
 
 ### FUNCTION 1

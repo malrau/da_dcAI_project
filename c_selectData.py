@@ -1,12 +1,14 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jun 21 12:04:26 2023
+#######################################
+#### FUNCTIONS TO SELECT TRAIN AND ####
+#### TEST DATA FOR THE MAIN MODEL  ####
+#######################################
 
-@author: mzlarosa
-"""
 ### IMPORT REQUIRED MODULES ###
-import os      # os-like features, as navigating directories
-from matplotlib import image as mpimg
+import os                              # os-like features, as navigating directories
+from matplotlib import image as mpimg  # dealing with image data
+
+
+### FUNCTION 1
 
 ### Selects images to be included in the train or test data set ###
 ### @param:  targetFolder          [string] - path of folder containing list of subfolders
@@ -32,9 +34,11 @@ def selectData(targetFolder):
     return data, classes
 
 
-### Selects images to be included in the train or test data set ###
-### @param:  stringClasses [list of strings] - strings with classes names
-### @return:    intClasses [list of strings] - classes names converted in integers
+### FUNCTION 2
+
+### Transforms strings into integer (for using tf.keras.utils.to_categorical) ###
+### @param:   stringClasses [list of strings] - strings with classes names
+### @return:    intClasses [list of integers] - classes names converted in integers
 ###
 def classesToInt(stringClasses):
     intClasses = list()
@@ -49,7 +53,9 @@ def classesToInt(stringClasses):
     return intClasses
 
 
-### Selects images to be included in the train or test data set ###
+### FUNCTION 3
+
+### Counts distinct integers in array of integer labels ###
 ### @param:  labelsArray  [list of integers] - list of bird classes in dataset
 ### @return:       count           [integer] - number of bird classes in dataset
 ###

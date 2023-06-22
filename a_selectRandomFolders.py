@@ -5,7 +5,7 @@
 
 ### IMPORT REQUIRED MODULES ###
 import os      # os-like features, as navigating directories
-import random  # random
+import random  # random data generation
 
 ### Selects n random subfolders from a target directory and shows their content
 ### @param:      targetFolder          [string] - path of folder containing list of subfolders
