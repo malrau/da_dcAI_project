@@ -31,5 +31,5 @@ def seqModel(trainData, trainLabels, testData, testLabels):
     # Evaluate the model
     test_loss, test_acc = model.evaluate(testData, testLabels, verbose=0)
     print('\nTest loss:', test_loss, '\nTest accuracy:', test_acc)
-    
+
     return history
