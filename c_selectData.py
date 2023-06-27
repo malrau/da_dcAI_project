@@ -25,7 +25,7 @@ def selectData(targetFolder):
         for imageName in os.listdir(targetFolder + '/' + birdClass):
             imagePath = targetFolder + '/' + birdClass + '/' + imageName
             image = mpimg.imread(imagePath)
-            if image.shape == (224, 224, 3):
+            if image.shape == (56, 56, 3):
                 data.append(image)
                 classes.append(birdClass)
             else:
