@@ -10,12 +10,15 @@ Created on Fri Jun 16 11:45:36 2023
 ##########################################
 import os
 import numpy as np
-from    matplotlib              import pyplot as plt
-from    tensorflow.keras.utils  import to_categorical
-from    a_selectRandomFolders   import selectRandomFolders
-from    b_viewClasses           import viewRandomClasses, viewRandomClass
-from    c_selectData            import selectData, classesToInt, countLabels
-from    d_sequentialModel       import seqModel
+from    matplotlib                import pyplot as plt
+from    tensorflow.keras.utils    import to_categorical
+from    keras.preprocessing.image import ImageDataGenerator
+from    sklearn.metrics           import classification_report, confusion_matrix
+from    a_selectRandomFolders     import selectRandomFolders
+from    b_viewClasses             import viewRandomClasses, viewRandomClass
+from    c_selectData              import selectData, classesToInt, countLabels
+from    d_sequentialModel         import seqModel
+from    e_plotConfusionMatrix     import plotCM
 
 
 ### 1) set path to the directory of the dataset (this is the targetFolder)
@@ -120,7 +123,17 @@ npTrainData = npTrainData / npTrainData.max()
 npTestData = npTestData / npTestData.max()
 
 ### 8) call the sequential model
-myModel = seqModel(npTrainData, npTrainLabels, npTestData, npTestLabels)
+# define variables needed by the model
+batchSize = 64                                          # batch size to be used in model.fit
+test_datagen = ImageDataGenerator(rescale = 1. / 255)
+nTestSamples = npTestData.shape[0]                      # number of images in test folder
+validGen = test_datagen.flow_from_directory(testPathWin,
+                                            target_size=(56, 56),
+                                            batch_size = 64,
+                                            class_mode = 'categorical') # generator to be used in model.predict
+
+myModel, Y_pred = seqModel(npTrainData, npTrainLabels, npTestData, npTestLabels, 
+                           batchSize, validGen, nTestSamples)
 
 ### 9) plot model accuracy and loss function
 # accuracy
@@ -142,3 +155,17 @@ plt.xlabel('Epoch')
 plt.legend()
 
 plt.show()
+
+### 10) plot the confution matrix and the classification report for
+###     a small sample of classes
+y_pred = np.argmax(Y_pred, axis=1)
+cm = confusion_matrix(validGen.classes, y_pred)
+thresh = cm.max() / 2.
+tick_marks = np.arange(len(classes))
+target_names = classes
+print('\nConfusion Matrix (small sample)\n')
+print(cm[0 : 15, 0 : 15])
+plotCM(cm[0 : 15, 0 : 15], classes[0 : 15])
+print('\n\nClassification Report (small sample)\n')
+class_report = classification_report(validGen.classes, y_pred, target_names = target_names)
+print(class_report[0 : 1000], (' ' * 18) + '[...]\n')
