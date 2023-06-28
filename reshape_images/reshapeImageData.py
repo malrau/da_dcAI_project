@@ -14,7 +14,8 @@ def reshapeDataset(targetFolder, destinationFolder):
         os.makedirs(destinationFolder + '/' + birdClass, exist_ok = True)
         for imageName in os.listdir(targetFolder + '/' + birdClass):
             originalImage = cv2.imread(targetFolder + '/' + birdClass + '/' + imageName)
-            reshapedImage = cv2.resize(originalImage, (56, 56), interpolation = cv2.INTER_AREA)
+            newShapes = originalImage.shape[0] // 4
+            reshapedImage = cv2.resize(originalImage, (newShapes, newShapes), interpolation = cv2.INTER_AREA)
             print(type(reshapedImage), reshapedImage.shape)
             cv2.imwrite(destinationFolder + '/' + birdClass + '/' + imageName, reshapedImage)
 
