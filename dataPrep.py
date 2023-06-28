@@ -119,8 +119,8 @@ else:
 del trainData, testData, trainClasses, npTrainClasses, testClasses, npTestClasses
 
 ### 7) normalize the data
-npTrainData = npTrainData / npTrainData.max()
-npTestData = npTestData / npTestData.max()
+npTrainData = np.array(npTrainData / npTrainData.max(), dtype = np.float16)
+npTestData = np.array(npTestData / npTestData.max(), dtype = np.float16)
 
 ### 8) call the sequential model
 # define variables needed by the model
