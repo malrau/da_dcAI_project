@@ -7,7 +7,7 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import InputLayer, Conv2D, MaxPooling2D, Activation, Flatten, Dense 
 
-def seqModel(trainData, trainLabels, testData, testLabels, batch_size, validation_generator, num_of_test_samples):
+def seqModel(trainData, trainLabels, testData, testLabels, validationData, validationLabels, batch_size, validation_generator, num_of_test_samples):
     # Model definition: input and convolutional layers
     model = Sequential()
     model.add(InputLayer(input_shape = (56, 56, 3), name = 'Input')) # input layer
@@ -33,7 +33,7 @@ def seqModel(trainData, trainLabels, testData, testLabels, batch_size, validatio
     model.compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
 
     # Assign accuracy and loss values to history object
-    history = model.fit(trainData, trainLabels, epochs = 10, batch_size = batch_size, validation_split = 0.20)
+    history = model.fit(trainData, trainLabels, epochs = 30, batch_size = batch_size, validation_data = (validationData, validationLabels))
 
     # Evaluate the model
     test_loss, test_acc = model.evaluate(testData, testLabels, verbose=0)

@@ -80,6 +80,7 @@ print('\nWe conclude that, although there is a varying number of images',
 ### 5) load the train and test data and labels into memory
 trainData, trainClasses = selectData(trainPathWin)
 testData, testClasses = selectData(testPathWin)
+validData, validClasses = selectData(validPath)
 print('The Python lists containing the images are turned into numerical arrays',
       'with 4 dimensions: the first one represents the number of images, while',
       'the other three represent the images\' shape, which has been rendered',
@@ -88,10 +89,15 @@ print('The Python lists containing the images are turned into numerical arrays',
 npTrainData = np.array(trainData)
 # test data
 npTestData = np.array(testData)
+# validation data
+npValidData = np.array(validData)
 print('Our train data array has', npTrainData.ndim, 'dimensions, and a shape of',
       npTrainData.shape, 'for a total number of elements of', npTrainData.size, '.')
 print('Our test data array has', npTestData.ndim, 'dimensions, and a shape of',
       npTestData.shape, 'for a total number of elements of', npTestData.size, '.')
+print('Our validation data array is equivalent in number to the test data array. It has',
+      npValidData.ndim, 'dimensions, and a shape of', npValidData.shape,
+      'for a total number of elements of', npValidData.size, '.')
 
 ### 6) turn the train and test labels into categorical arrays
 # train labels
@@ -104,36 +110,43 @@ testClasses = classesToInt(testClasses)
 npTestClasses = np.array(testClasses)
 npTestClasses = np.expand_dims(npTestClasses, axis = 1) # add dimension to array
 npTestLabels = to_categorical(npTestClasses)
+# validation labels
+validClasses = classesToInt(validClasses)
+npValidClasses = np.array(validClasses)
+npValidClasses = np.expand_dims(npValidClasses, axis = 1) # add dimension to array
+npValidLabels = to_categorical(npValidClasses)
 print('\nThe data labels represent the bird class to which the images belong.',
       'They are first converted into 2D arrays and finally turned into',
       'categorical data: bird classes are substituted by numerical categories.')
 trainCount = countLabels(npTrainClasses) # count train labels
-testCount = countLabels(npTestClasses) # count test labels
-if trainCount == testCount:
+testCount = countLabels(npTestClasses)   # count test labels
+validCount = countLabels(npValidClasses) # count validation labels
+if trainCount == testCount and trainCount == validCount:
     print('There are', npTrainClasses.size, 'categories (it means that each image',
           'belongs to a category) for a set of', trainCount, 'categories.')
 else:
-    print('ERROR: train labels count and test labels count don\'t match.')
+    print('ERROR: train labels count, test labels count and validation labels count don\'t match.')
 
 ### 6bis) destroy unused objects and free up memory
-del trainData, testData, trainClasses, npTrainClasses, testClasses, npTestClasses
+del trainData, testData, trainClasses, npTrainClasses, testClasses, npTestClasses, validClasses, npValidClasses
 
 ### 7) normalize the data
 npTrainData = np.array(npTrainData / npTrainData.max(), dtype = np.float16)
 npTestData = np.array(npTestData / npTestData.max(), dtype = np.float16)
+npValidData = np.array(npValidData / npValidData.max(), dtype = np.float16)
 
 ### 8) call the sequential model
 # define variables needed by the model
 batchSize = 64                                          # batch size to be used in model.fit
-test_datagen = ImageDataGenerator(rescale = 1. / 255)
+testDatagen = ImageDataGenerator(rescale = 1. / 255)
 nTestSamples = npTestData.shape[0]                      # number of images in test folder
-validGen = test_datagen.flow_from_directory(testPathWin,
+validGen = testDatagen.flow_from_directory(testPathWin,
                                             target_size=(56, 56),
-                                            batch_size = 64,
+                                            batch_size = batchSize,
                                             class_mode = 'categorical') # generator to be used in model.predict
 
 myModel, Y_pred = seqModel(npTrainData, npTrainLabels, npTestData, npTestLabels, 
-                           batchSize, validGen, nTestSamples)
+                           npValidData, npValidLabels, batchSize, validGen, nTestSamples)
 
 ### 9) plot model accuracy and loss function
 # accuracy
