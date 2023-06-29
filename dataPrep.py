@@ -77,7 +77,7 @@ print('\nWe conclude that, although there is a varying number of images',
       'of', min(targetClasses[2]), 'images, and a maximum of',
       max(targetClasses[2]), 'images.\n')
 
-### 5) load the train and test data and labels into memory
+### 5) load the train, test and validation data and labels into memory
 trainData, trainClasses = selectData(trainPathWin)
 testData, testClasses = selectData(testPathWin)
 validData, validClasses = selectData(validPath)
@@ -128,7 +128,7 @@ else:
     print('ERROR: train labels count, test labels count and validation labels count don\'t match.')
 
 ### 6bis) destroy unused objects and free up memory
-del trainData, testData, trainClasses, npTrainClasses, testClasses, npTestClasses, validClasses, npValidClasses
+del trainData, testData, validData, trainClasses, testClasses, validClasses
 
 ### 7) normalize the data
 npTrainData = np.array(npTrainData / npTrainData.max(), dtype = np.float16)
@@ -137,16 +137,8 @@ npValidData = np.array(npValidData / npValidData.max(), dtype = np.float16)
 
 ### 8) call the sequential model
 # define variables needed by the model
-batchSize = 64                                          # batch size to be used in model.fit
-testDatagen = ImageDataGenerator(rescale = 1. / 255)
-nTestSamples = npTestData.shape[0]                      # number of images in test folder
-validGen = testDatagen.flow_from_directory(testPathWin,
-                                            target_size=(56, 56),
-                                            batch_size = batchSize,
-                                            class_mode = 'categorical') # generator to be used in model.predict
-
 myModel, Y_pred = seqModel(npTrainData, npTrainLabels, npTestData, npTestLabels, 
-                           npValidData, npValidLabels, batchSize, validGen, nTestSamples)
+                           npValidData, npValidLabels)
 
 ### 9) plot model accuracy and loss function
 # accuracy
@@ -172,7 +164,7 @@ plt.show()
 ### 10) plot the confution matrix and the classification report for
 ###     a small sample of classes
 y_pred = np.argmax(Y_pred, axis=1)
-cm = confusion_matrix(validGen.classes, y_pred)
+cm = confusion_matrix(npTestClasses, y_pred)
 thresh = cm.max() / 2.
 tick_marks = np.arange(len(classes))
 target_names = classes
@@ -180,5 +172,5 @@ print('\nConfusion Matrix (small sample)\n')
 print(cm[0 : 15, 0 : 15])
 plotCM(cm[0 : 15, 0 : 15], classes[0 : 15])
 print('\n\nClassification Report (small sample)\n')
-class_report = classification_report(validGen.classes, y_pred, target_names = target_names)
+class_report = classification_report(npTestClasses, y_pred, target_names = target_names)
 print(class_report[0 : 1000], (' ' * 18) + '[...]\n')
