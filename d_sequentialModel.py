@@ -7,6 +7,12 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import InputLayer, Conv2D, MaxPooling2D, Activation, Flatten, Dense 
 
+### Defines, compiles, trains and evaluates a sequential model for image classification ###
+### @param:     [*]Data   [3D array of integers] - the train, test and validation data
+### @param:   [*]Labels   [1D array of integers] - the train, test and validation labels
+### @return:    history    [dictionary of lists] - accuracy and loss output from training the model
+### @return: prediction      [array of integers] - predicted classification of the model on the test data
+###
 def seqModel(trainData, trainLabels, testData, testLabels, validationData, validationLabels):
     # Model definition: input and convolutional layers
     model = Sequential()

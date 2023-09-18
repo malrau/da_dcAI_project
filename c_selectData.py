@@ -10,7 +10,7 @@ from matplotlib import image as mpimg  # dealing with image data
 
 ### FUNCTION 1
 
-### Selects images to be included in the train or test data set ###
+### Selects images to be included in the train, test or validation data set ###
 ### @param:  targetFolder          [string] - path of folder containing list of subfolders
 ### @return:         data  [list of arrays] - image files
 ### @return:      classes [list of strings] - image files folders (bird classes)
@@ -36,7 +36,7 @@ def selectData(targetFolder):
 
 ### FUNCTION 2
 
-### Transforms strings into integer (for using tf.keras.utils.to_categorical) ###
+### Transforms strings into integers (for using tf.keras.utils.to_categorical) ###
 ### @param:   stringClasses [list of strings] - strings with classes names
 ### @return:    intClasses [list of integers] - classes names converted in integers
 ###
