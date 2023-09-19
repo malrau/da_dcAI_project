@@ -17,16 +17,26 @@ MAIN STRUCTURE
 The main file hosting the model is the <i>dataPrep.py</i> file. The file has 10 sections, performing all required operations including data loading, sample plotting, data normalization, model processing and plotting, confusion matrix plotting. Many operations are performed by calling custom functions stored in various .py files. They will be presented under the section description. In detail, we have:
 
 - Preliminary section for importing necessary or useful modules (including files storing my custom functions)
-- Section 1: setting the folders hosting the dataset and showing how many subfolders (bird classes) are there<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;/
-- Section 2: showing how many images are there within a sample of 15 subfolders (bird classes)<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>selectRandomFolders</code>: Selects n random subfolders from a target directory and shows their content
-- Section 3: plotting one random image from the sample chosen in <i>Section 2</i><br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>viewRandomClasses</code>: Reads one random image from n subfolders
-- Section 4: plotting fifteen random images from one of the sampled subfolders<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>viewRandomClass</code>: Reads n images from a randomly chosen subfolder
-- Section 5: loading train, test and validation data and labels<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>selectData</code>: Selects images to be included in the train, test or validation data set
-- Section 6: processing train, test and validation labels into categorical arrays<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>classesToInt</code>: Transforms strings into integers<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>countLabels</code>: Counts distinct integers in array of integer labels
-- Section 7: normalizing train, test and validation data by dividing fortheir max value<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;/
-- Section 8: running the sequential model<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>seqModel</code>: includes model definition, printing of summary information on layers' outputs and parameters, model compilation and training, model evaluation and predictions
-- Section 9: plotting model accuracy and loss function<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;/
-- Section 10: plotting the confusion matrix and classification report for a sample of bird classes<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>plotCM</code>: Plots the confusion matrix for an image classification model
+- ##### Section 1:
+setting the folders hosting the dataset and showing how many subfolders (bird classes) are there<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;/
+- ##### Section 2:
+showing how many images are there within a sample of 15 subfolders (bird classes)<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>selectRandomFolders</code>: Selects n random subfolders from a target directory and shows their content
+- ##### Section 3:
+plotting one random image from the sample chosen in <i>Section 2</i><br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>viewRandomClasses</code>: Reads one random image from n subfolders
+- ##### Section 4:
+plotting fifteen random images from one of the sampled subfolders<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>viewRandomClass</code>: Reads n images from a randomly chosen subfolder
+- ##### Section 5:
+loading train, test and validation data and labels<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>selectData</code>: Selects images to be included in the train, test or validation data set
+- ##### Section 6:
+processing train, test and validation labels into categorical arrays<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>classesToInt</code>: Transforms strings into integers<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>countLabels</code>: Counts distinct integers in array of integer labels
+- ##### Section 7:
+normalizing train, test and validation data by dividing fortheir max value<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;/
+- ##### Section 8:
+running the sequential model<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>seqModel</code>: includes model definition, printing of summary information on layers' outputs and parameters, model compilation and training, model evaluation and predictions
+- ##### Section 9:
+plotting model accuracy and loss function<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;/
+- ##### Section 10:
+plotting the confusion matrix and classification report for a sample of bird classes<br>custom functions:<br>&nbsp;&nbsp;&nbsp;&nbsp;<code>plotCM</code>: Plots the confusion matrix for an image classification model
 
 <br>
 
@@ -50,5 +60,5 @@ A second problem lies in the time requested to run the model, which depends on t
 
 #### Porting the project to Google Colab
 <p>
-Porting the project to Colab entailed a unique major challenge, i.e. understanding how to use the data set within an online programming setting. The best approach seemed to compress the data set (the three train, test and validation folders) and upload it on a Google Drive (the Google Cloud storage solution) folder. To use the data from a Google Drive folder, I needed to import the <code>drive</code> module ( a dependency of the <code>google.colab</code> module already in memory in a Colab environment and the <code>sys</code> module. The <code>drive.mount()</code> command mounts the Google Drive account of the user (Colab requires a Google account to run code) where specified, while the <code>sys.path.insert()</code>) command allows to include (<i>insert</i>) the folder where the project is stored in the system folder from which it is possible to automatically import dependencies (inserting it at first [0] position makes Python first search that folder for required dependencies). Finally, <code>unzip <i>myArchive.zip</i></code> extracts the content of the archived data set to the Colab environment for use within the notebook. The Colab folders where the data set is stored contain now the target folders that must be fed to the functions used by the project. This means that, relative to the <i>dataPrep.py</i> file, I only had to change two sections of the main project file. The code attempts run in Colab are stored in the <i>colab</i> folder of the project, while the obtained results are stored in the <i>model_results</i> folder of the <i>report</i> folder of the project as html and pdf files.
+Porting the project to Colab entailed a unique major challenge, i.e. understanding how to use access the data (bird images) from an online programming setting. The best approach seemed to compress the data set (the train, test and validation folders) and upload it on a <i>Google Drive</i> (the cloud storage solution from Google) folder. To use the data from a <i>Google Drive</i> folder, I needed to import the <code>drive</code> module, which is a dependency of the <code>google.colab</code> module (which is already in memory in a Colab environment) and the <code>sys</code> module. The <code>drive.mount()</code> command mounts the <i>Google Drive</i> account of the user (Colab requires a Google account to run code) where specified, while the <code>sys.path.insert()</code>) command allows to include (<i>insert</i>) the folder where the project is stored in the system folder. In this way it is possible to automatically import dependencies (inserting it at first [0] position makes Python first search that folder for required dependencies). Finally, <code>unzip <i>myArchive.zip</i></code> extracts the content of the archived data set to the Colab environment for use within the notebook. The Colab folders where the data set is stored contain now the target folders that must be fed to the functions used by the project. This means that, relative to the <i>dataPrep.py</i> file, I only had to change the first two sections of the main project file. The project instances that I run in Colab are stored in the <i>colab</i> folder of the project, while the obtained results are stored in the <i>model_results</i> folder (located within the <i>report</i> folder of the project) as html and pdf files.
 </p>
