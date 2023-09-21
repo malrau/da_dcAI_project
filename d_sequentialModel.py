@@ -19,7 +19,7 @@ def seqModel(trainData, trainLabels, testData, testLabels, validationData, valid
     model.add(InputLayer(input_shape = (56, 56, 3), name = 'Input')) # input layer
     model.add(Conv2D(filters = 32, kernel_size = 3)) # 2D convolution layer
     model.add(Activation('ReLU', name = 'ReLU'))     # activation function
-    model.add(MaxPooling2D(3))
+    model.add(MaxPooling2D(pool_size = (3, 3)))
 
     # Model definition: image classification layers
     model.add(Flatten())
