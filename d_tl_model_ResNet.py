@@ -9,7 +9,7 @@ from tensorflow.keras.layers       import Activation, Dense
 from tensorflow.keras.applications import ResNet50
 
 def seqModel(trainData, trainLabels, testData, testLabels, validationData, validationLabels):
-    # Model definition: input and convolutional layers
+    # Model definition: application of ResNet pre-trained model
     model = Sequential()
     model.add(ResNet50(input_shape = (56, 56, 3),
                        include_top = False,
